@@ -1,0 +1,18 @@
+
+}
+
+    Añade una carpeta para los archivos:
+        En la raíz del proyecto, crea una carpeta llamada files.
+        Coloca algunos archivos dentro de la carpeta files para que la API pueda listarlos.
+
+    Ejecuta la aplicación:
+        Presiona F5 para compilar y ejecutar la aplicación.
+        Abre un navegador y navega a 
+https://localhost:5001/api/files
+
+Deberías ver una lista de archivos.
+
+Este ejemplo básico te proporciona una API que lista archivos en la carpeta files. Puedes adaptarlo y ampliarlo según tus necesidades. Recuerda que esta API no maneja temas de autenticación o seguridad, así que asegúrate de proteger adecuadamente la API en un entorno de producción.
+ChatGPT can make mistakes. Consider checking important information.
+
+ChatGPT

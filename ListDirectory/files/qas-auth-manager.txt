@@ -1,0 +1,15 @@
+[METHOD]
+POST
+
+[URL]
+https://qas-authmanager-api.azurewebsites.net/api/Auth/Login
+
+[HEADER]
+
+[KEY]
+FR-APP 
+[VALUE]
+03E5AC46-D80F-4F94-A3E8-DA96520253B8
+
+[BODY]
+{ "user": "admin", "password": "admin123" }

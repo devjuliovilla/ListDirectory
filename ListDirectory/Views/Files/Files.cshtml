@@ -1,0 +1,95 @@
+﻿@model IEnumerable<ListDirectory.Models.FileViewModel>
+
+@{
+}
+<div style="max-width: 800px; margin: 25px auto;">
+    <h1 class="mt-3 mb-3">Lista de Archivos</h1>
+    <hr />
+    <div class="mt-3 d-flex justify-content-start align-items-center">
+        <a href="/files/up" class="btn btn-secondary" @(ViewData["IsRoot"] as bool? == true ? "hidden" : "")>
+            <i class="fa fa-caret-left"></i> Volver
+            </a>
+        <a class="btn btn-secondary" @(ViewData["IsRoot"] as bool? == false ? "hidden" : "") disabled>
+            <i class="fa fa-caret-left"></i> Volver
+        </a>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb m-0">
+                @foreach (var breadcrumb in ViewData["Breadcrumbs"] as List<BreadcrumbViewModel>)
+                {
+                    <li class="breadcrumb-item ml-2">
+                        @breadcrumb.Name
+                    </li>
+                }
+            </ol>
+        </nav>
+    </div>
+
+    <hr class="mb-3" />
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 60%; padding-left: 15px;">
+                        Nombre de Archivo
+                    </th>
+                    <th class="text-center"
+                        style="width: 20%;">
+                        Tamaño
+                    </th>
+                    <th class="text-center"
+                        style="width: 20%;">
+                        Fecha de creación
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model.OrderByDescending(e => e.FileType))
+                {
+                <tr>
+                    <td>
+                        @if (entry.FileType == "Folder")
+                        {
+                        <a href="/files/@entry.FileName">
+                            <i class="fa fa-folder fa-2x mr-2"></i>
+                            @entry.FileName /
+                        </a>
+                        }
+                        else
+                        {
+                        <a href="/downloadFile/@entry.FileName" download="@entry.FileName">
+                            <i class="fa fa-file fa-2x mr-2"></i>
+                            @entry.FileName
+                        </a>
+                        }
+                    </td>
+                    <td class="text-center">@entry.FileSizeMB.ToString("N2") MB</td>
+                    <td class="text-center">@entry.CreationDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+}
+
+@functions {
+    private string GetFileIcon(string fileType)
+    {
+        switch (fileType)
+        {
+            case "pdf":
+                return "pdf";
+            case "jpg":
+            case "jpeg":
+            case "png":
+                return "image";
+            case "xlsx":
+            case "xls":
+                return "excel";
+            default:
+                return "alt";
+        }
+    }
+}
