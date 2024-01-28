@@ -1,3 +1,8 @@
+using ListDirectory.Authentication;
+using ListDirectory.Middleware;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
+
 namespace ListDirectory
 {
     public class Program
@@ -9,6 +14,11 @@ namespace ListDirectory
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddAuthentication("BasicAuthentication")
+            .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            builder.Services.AddScoped<AppAuthorizationFilter>();
 
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
@@ -39,8 +49,15 @@ namespace ListDirectory
             {
                 endpoints.MapControllers();
             });
-
             app.UseAuthorization();
+
+            bool enableSecurity = app.Configuration.GetValue<bool>("AppSettings:EnableSecurity");
+
+            if (enableSecurity)
+            {
+                app.UseAuthentication();
+                app.UseMiddleware<SecurityMiddleware>();
+            }
 
             app.MapControllerRoute(
                 name: "default",

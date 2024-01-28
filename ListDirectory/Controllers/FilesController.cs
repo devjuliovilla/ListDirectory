@@ -1,9 +1,11 @@
-﻿using ListDirectory.Extensions;
+﻿using ListDirectory.Authentication;
+using ListDirectory.Extensions;
 using ListDirectory.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ListDirectory.Controllers
 {
+    [AppAuthentication]
     [Route("/Files")]
     public class FilesController : Controller
     {
