@@ -15,11 +15,13 @@ namespace ListDirectory.Authentication
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            bool enableAuthentication = configuration.GetValue<bool>("AppSettings:EnableAuthentication");
-
-            if (!enableAuthentication)
-            {
+            bool enableSecurity = configuration.GetValue<bool>("AppSettings:EnableSecurity");
+            if (!enableSecurity)
                 return;
+
+            if (context.HttpContext.Session.GetInt32("IsAuthorized") != 1)
+            {
+                context.Result = new RedirectToActionResult("Login", "Account", null);
             }
         }
     }

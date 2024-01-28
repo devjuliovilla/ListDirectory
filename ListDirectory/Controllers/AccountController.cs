@@ -25,8 +25,10 @@ namespace ListDirectory.Controllers
             string storedPassword = configuration.GetValue<string>("AppSettings:Password");
 
             if (password == storedPassword)
-                HttpContext.Session.Set("IsAuthorized", new byte[] { 1 });
-                return RedirectToAction("Files", "Home");
+            {
+                HttpContext.Session.SetInt32("IsAuthorized", 1);
+                return RedirectToAction("Files", "Files");
+            }
             
             return View();
         }
