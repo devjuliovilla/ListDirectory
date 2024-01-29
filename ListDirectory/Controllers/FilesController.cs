@@ -23,8 +23,17 @@ namespace ListDirectory.Controllers
         {
             try
             {
-                currentFolder = string.IsNullOrEmpty(folder) ? rootFolder : Path.Combine(rootFolder, folder);
-                HttpContext.Session.Set("CurrentFolder", currentFolder);
+                var sessionCurrentFolder = HttpContext.Session.Get<string>("CurrentFolder");
+                if (string.IsNullOrEmpty(sessionCurrentFolder))
+                {
+                    currentFolder = String.IsNullOrEmpty(folder) ? rootFolder : Path.Combine(rootFolder, folder.Replace(Path.DirectorySeparatorChar.ToString(), ""));
+                    HttpContext.Session.Set("CurrentFolder", currentFolder);
+                }
+                else
+                {
+                    currentFolder = Path.Combine(sessionCurrentFolder, folder);
+                    HttpContext.Session.Set("CurrentFolder", currentFolder);
+                }
 
                 var breadcrumbs = GetBreadcrumbs(currentFolder);
                 HttpContext.Session.Set("Breadcrumbs", breadcrumbs);
@@ -82,16 +91,15 @@ namespace ListDirectory.Controllers
         {
             try
             {
+                HttpContext.Session.Set("CurrentFolder", "");
                 var breadcrumbs = HttpContext.Session.Get<List<BreadcrumbViewModel>>("Breadcrumbs");
 
                 if (breadcrumbs != null && breadcrumbs.Count > 0)
                 {
-                    // Obtener la ruta anterior y redirigir
                     var previousPath = breadcrumbs[breadcrumbs.Count - 2].Path;
                     return RedirectToAction("Files", new { folder = previousPath });
                 }
 
-                // Si no hay ruta anterior, redirigir a la raíz
                 return RedirectToAction("");
             }
             catch (Exception ex)
