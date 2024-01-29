@@ -4,7 +4,7 @@ Proyecto .NET Core MVC para listar archivos de directorio.
 
 ## Funcionalidad
 
-Simplemente arrastar archivos o carpetas en el directorio Files.
+Simplemente arrastre archivos o carpetas en el directorio "Files".
 
 ## Autenticación
 
